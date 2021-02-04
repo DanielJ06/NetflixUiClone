@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.danieljrodrigues.netflixclone.model.Movie;
@@ -31,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         List<Movie> movies = new ArrayList<Movie>();
         for (int i = 0; i < 10; i++) {
             Movie movie = new Movie();
-            movie.setCoverUrl("Teste " + i);
+            movie.setCoverUrl(R.drawable.movie);
             movies.add(movie);
         }
 
@@ -41,11 +42,11 @@ public class MainActivity extends AppCompatActivity {
 
     private class CategoryHolder extends RecyclerView.ViewHolder {
 
-        final TextView title;
+        final ImageView movieCover;
 
         public CategoryHolder(@NonNull View itemView) {
             super(itemView);
-            title = itemView.findViewById(R.id.movie_title);
+            movieCover = itemView.findViewById(R.id.movie_cover);
         }
     }
 
@@ -66,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(@NonNull CategoryHolder holder, int position) {
             Movie movie = movieData.get(position);
-            holder.title.setText(movie.getCoverUrl());
+            holder.movieCover.setImageResource(movie.getCoverUrl());
         }
 
         @Override
