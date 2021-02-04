@@ -7,6 +7,7 @@
     tools:context=".MovieActivity">
 
     <ImageView
+        android:id="@+id/coverImage"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:src="@drawable/shadows"
@@ -25,5 +26,26 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/ic_play"
+        app:layout_constraintBottom_toBottomOf="@+id/coverImage"
+        app:layout_constraintEnd_toEndOf="@+id/coverImage"
+        app:layout_constraintStart_toStartOf="@+id/coverImage"
+        app:layout_constraintTop_toTopOf="@+id/coverImage" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="5dp"
+        android:text="Batman Begins"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/coverImage"
+        app:layout_constraintStart_toStartOf="@+id/coverImage" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
