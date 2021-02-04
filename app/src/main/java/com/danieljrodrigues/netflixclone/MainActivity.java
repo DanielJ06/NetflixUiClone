@@ -27,14 +27,14 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView categoryRecyclerView = findViewById(R.id.rv_category);
 
         List<Category> categories = new ArrayList<>();
-        for (int j=0; j<2; j++) {
+        for (int j = 0; j < 10; j++) {
             Category category = new Category();
             category.setTitle("Category" + j);
 
             List<Movie> movies = new ArrayList<>();
             for (int i = 0; i < 10; i++) {
                 Movie movie = new Movie();
-                movie.setCoverUrl(R.drawable.movie);
+//                movie.setCoverUrl(R.drawable.movie);
                 movies.add(movie);
             }
             category.setMovies(movies);
@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(@NonNull MovieHolder holder, int position) {
             Movie movie = movieData.get(position);
-            holder.coverUrl.setImageResource(movie.getCoverUrl());
+            //holder.coverUrl.setImageResource(movie.getCoverUrl());
         }
 
         @Override
