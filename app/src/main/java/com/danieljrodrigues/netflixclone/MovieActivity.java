@@ -20,5 +20,7 @@ public class MovieActivity extends AppCompatActivity {
             getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back);
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
+
+
     }
 }
