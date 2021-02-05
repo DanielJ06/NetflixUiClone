@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.danieljrodrigues.netflixclone.model.Category;
 import com.danieljrodrigues.netflixclone.model.Movie;
+import com.danieljrodrigues.netflixclone.utils.JsonDownloadTask;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
         );
         CategoryAdapter adapter = new CategoryAdapter(categories);
         categoryRecyclerView.setAdapter(adapter);
+
+        new JsonDownloadTask(MainActivity.this).execute("https://tiagoaguiar.co/api/netflix/home");
     }
 
     private class MovieHolder extends RecyclerView.ViewHolder {
