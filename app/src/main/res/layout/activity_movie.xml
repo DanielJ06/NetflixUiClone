@@ -97,12 +97,14 @@
         app:layout_constraintTop_toBottomOf="@+id/movie_cast" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/similar_rv"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/similar_movies" />
+        app:layout_constraintTop_toBottomOf="@id/similar_movies"
+        tools:listitem="@layout/movie_item_similar"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
