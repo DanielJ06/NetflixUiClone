@@ -24,13 +24,18 @@ import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 
-public class JsonDownloadTask extends AsyncTask<String, Void, List<Category>> {
+public class CategoryTask extends AsyncTask<String, Void, List<Category>> {
 
     private final WeakReference<Context> context;
-    ProgressDialog dialog;
+    private ProgressDialog dialog;
+    private CategoryLoader categoryLoader;
 
-    public JsonDownloadTask(Context context) {
+    public CategoryTask(Context context) {
         this.context = new WeakReference<>(context);
+    }
+
+    public void setCategoryLoader(CategoryLoader categoryLoader) {
+        this.categoryLoader = categoryLoader;
     }
 
     @Override
@@ -59,7 +64,7 @@ public class JsonDownloadTask extends AsyncTask<String, Void, List<Category>> {
             }
 
             InputStream inputStream = urlConnection.getInputStream();
-            BufferedInputStream in = new BufferedInputStream(urlConnection.getInputStream());
+            BufferedInputStream in = new BufferedInputStream(inputStream);
             String jsonAsString = toString(in);
 
             List<Category> categories = getCategories(new JSONObject(jsonAsString));
@@ -103,8 +108,6 @@ public class JsonDownloadTask extends AsyncTask<String, Void, List<Category>> {
             categoryObj.setMovies(movies);
             categories.add(categoryObj);
         }
-
-
         return categories;
     }
 
@@ -112,6 +115,10 @@ public class JsonDownloadTask extends AsyncTask<String, Void, List<Category>> {
     protected void onPostExecute(List<Category> categories) {
         super.onPostExecute(categories);
         dialog.dismiss();
+
+        if(categoryLoader != null) {
+            categoryLoader.onResult(categories);
+        }
     }
 
     private String toString(InputStream is) throws IOException {
@@ -123,5 +130,9 @@ public class JsonDownloadTask extends AsyncTask<String, Void, List<Category>> {
         }
 
         return new String(baos.toByteArray());
+    }
+
+    public interface CategoryLoader {
+        void onResult(List<Category> categories);
     }
 }
