@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.danieljrodrigues.netflixclone.model.Category;
 import com.danieljrodrigues.netflixclone.model.Movie;
 import com.danieljrodrigues.netflixclone.utils.CategoryTask;
+import com.danieljrodrigues.netflixclone.utils.ImageDownloadTask;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements CategoryTask.Cate
         @Override
         public void onBindViewHolder(@NonNull MovieHolder holder, int position) {
             Movie movie = movieData.get(position);
-            //holder.coverUrl.setImageResource(movie.getCoverUrl());
+            new ImageDownloadTask(holder.coverUrl).execute(movie.getCoverUrl());
         }
 
         @Override
