@@ -97,9 +97,11 @@ public class CategoryTask extends AsyncTask<String, Void, List<Category>> {
             for (int j = 0; j < movieArr.length(); j++) {
                 JSONObject movie =  movieArr.getJSONObject(j);
                 String coverUrl = movie.getString("cover_url");
+                int id = movie.getInt("id");
 
                 Movie movieObj = new Movie();
                 movieObj.setCoverUrl(coverUrl);
+                movieObj.setId(id);
                 movies.add(movieObj);
             }
 
