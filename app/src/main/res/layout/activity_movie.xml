@@ -47,12 +47,12 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginBottom="10dp"
-            android:text="Batman Begins"
             android:textColor="@android:color/white"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/coverImage"
-            app:layout_constraintStart_toStartOf="@+id/coverImage" />
+            app:layout_constraintStart_toStartOf="@+id/coverImage"
+            tools:text="Batman Begins" />
 
         <TextView
             android:id="@+id/movie_synopsis"
@@ -63,12 +63,12 @@
             android:ellipsize="end"
             android:lineSpacingExtra="3sp"
             android:maxLines="3"
-            android:text="lorem ipsum dolor asit emet soidaosidjasoidjsdfsdf soidaosidjasoidjsdfsdfsoidaosidjasoidjsdfsdf dsssddssdsdsd"
             android:textColor="@android:color/white"
             android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/coverImage" />
+            app:layout_constraintTop_toBottomOf="@+id/coverImage"
+            tools:text="lorem ipsum dolor asit emet soidaosidjasoidjsdfsdf soidaosidjasoidjsdfsdfsoidaosidjasoidjsdfsdf dsssddssdsdsd" />
 
         <TextView
             android:id="@+id/movie_cast"
@@ -79,12 +79,12 @@
             android:ellipsize="end"
             android:lineSpacingExtra="3sp"
             android:maxLines="3"
-            android:text="lorem ipsum dolor asit emet soidaosidjasoidjsdfsdf"
             android:textColor="@android:color/darker_gray"
             android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/movie_synopsis" />
+            app:layout_constraintTop_toBottomOf="@+id/movie_synopsis"
+            tools:text="lorem ipsum dolor asit emet soidaosidjasoidjsdfsdf" />
 
         <TextView
             android:id="@+id/similar_movies"

@@ -45,7 +45,7 @@ public class MovieActivity extends AppCompatActivity implements MovieDetailTask.
         Toolbar movieToolbar = findViewById(R.id.movie_toolbar);
         setSupportActionBar(movieToolbar);
 
-        if(getSupportActionBar() != null) {
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back);
             getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -59,7 +59,7 @@ public class MovieActivity extends AppCompatActivity implements MovieDetailTask.
         rvSimilar.setAdapter(movieAdapter);
 
         Bundle extras = getIntent().getExtras();
-        if(extras != null) {
+        if (extras != null) {
             int id = extras.getInt("id");
             MovieDetailTask movieDetailTask = new MovieDetailTask(this);
             movieDetailTask.setMovieDetailLoader(this);

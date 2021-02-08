@@ -42,36 +42,36 @@ public class MovieDetailTask extends AsyncTask<String, Void, MovieDetail> {
     protected void onPreExecute() {
         super.onPreExecute();
         Context context = this.context.get();
-        if(context != null) {
+        if (context != null) {
             dialog = ProgressDialog.show(context, "Loading", "", true);
         }
     }
 
     @Override
     protected MovieDetail doInBackground(String... params) {
-       String url = params[0];
-       try {
-           URL req = new URL(url);
-           HttpURLConnection urlConnection = (HttpURLConnection) req.openConnection();
+        String url = params[0];
+        try {
+            URL req = new URL(url);
+            HttpURLConnection urlConnection = (HttpURLConnection) req.openConnection();
 
-           if (urlConnection.getResponseCode() > 200) {
-               return null;
-           }
+            if (urlConnection.getResponseCode() > 200) {
+                return null;
+            }
 
-           InputStream inputStream = urlConnection.getInputStream();
+            InputStream inputStream = urlConnection.getInputStream();
 
-           BufferedInputStream in = new BufferedInputStream(inputStream);
-           String jsonAsString = toString(in);
+            BufferedInputStream in = new BufferedInputStream(inputStream);
+            String jsonAsString = toString(in);
 
-           MovieDetail movieDetail = getMovieDetail(new JSONObject(jsonAsString));
-           in.close();
+            MovieDetail movieDetail = getMovieDetail(new JSONObject(jsonAsString));
+            in.close();
 
-           return movieDetail;
-       } catch (Exception e) {
-           e.printStackTrace();
-       }
+            return movieDetail;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-       return null;
+        return null;
     }
 
     private MovieDetail getMovieDetail(JSONObject json) throws JSONException {
