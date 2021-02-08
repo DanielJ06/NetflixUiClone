@@ -13,11 +13,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.danieljrodrigues.netflixclone.model.Movie;
+import com.danieljrodrigues.netflixclone.model.MovieDetail;
+import com.danieljrodrigues.netflixclone.utils.MovieDetailTask;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MovieActivity extends AppCompatActivity {
+public class MovieActivity extends AppCompatActivity implements MovieDetailTask.MovieDetailLoader {
 
     private RecyclerView rvSimilar;
 
@@ -44,6 +46,18 @@ public class MovieActivity extends AppCompatActivity {
         rvSimilar = findViewById(R.id.similar_rv);
         rvSimilar.setLayoutManager(new GridLayoutManager(this, 3));
         rvSimilar.setAdapter(new MovieAdapter(movies));
+
+        Bundle extras = getIntent().getExtras();
+        if(extras != null) {
+            int id = extras.getInt("id");
+            MovieDetailTask movieDetailTask = new MovieDetailTask(this);
+            movieDetailTask.execute("https://tiagoaguiar.co/api/netflix/" + id);
+        }
+    }
+
+    @Override
+    public void onResult(MovieDetail movieDetail) {
+
     }
 
     private class MovieHolder extends RecyclerView.ViewHolder {

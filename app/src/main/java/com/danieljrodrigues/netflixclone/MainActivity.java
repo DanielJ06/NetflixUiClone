@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -43,6 +44,10 @@ public class MainActivity extends AppCompatActivity implements CategoryTask.Cate
         categoryTask.execute("https://tiagoaguiar.co/api/netflix/home");
     }
 
+    interface OnItemClickListener {
+        void onClick(int position);
+    }
+
     @Override
     public void onResult(List<Category> categories) {
         Log.i("TESTE", String.valueOf(categories));
@@ -53,13 +58,16 @@ public class MainActivity extends AppCompatActivity implements CategoryTask.Cate
     private class MovieHolder extends RecyclerView.ViewHolder {
         ImageView coverUrl;
 
-        public MovieHolder(@NonNull View itemView) {
+        public MovieHolder(@NonNull View itemView, final OnItemClickListener onItemClickListener) {
             super(itemView);
             coverUrl = itemView.findViewById(R.id.movie_cover);
+            itemView.setOnClickListener(v -> {
+                onItemClickListener.onClick(getAdapterPosition());
+            });
         }
     }
 
-    private class MovieAdapter extends RecyclerView.Adapter<MovieHolder> {
+    private class MovieAdapter extends RecyclerView.Adapter<MovieHolder> implements OnItemClickListener {
         private List<Movie> movieData;
 
         private MovieAdapter(List<Movie> movies) {
@@ -69,9 +77,9 @@ public class MainActivity extends AppCompatActivity implements CategoryTask.Cate
         @NonNull
         @Override
         public MovieHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return new MovieHolder(
-                LayoutInflater.from(MainActivity.this).inflate(R.layout.movie_item, null)
-            );
+            View view = LayoutInflater.from(MainActivity.this).inflate(R.layout.movie_item, null);
+
+            return new MovieHolder(view, this);
         }
 
         @Override
@@ -83,6 +91,13 @@ public class MainActivity extends AppCompatActivity implements CategoryTask.Cate
         @Override
         public int getItemCount() {
             return movieData.size();
+        }
+
+        @Override
+        public void onClick(int position) {
+            Intent intent = new Intent(MainActivity.this, MovieActivity.class);
+            intent.putExtra("id", movieData.get(position).getId());
+            startActivity(intent);
         }
     }
 
