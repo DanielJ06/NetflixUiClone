@@ -3,6 +3,7 @@ package com.danieljrodrigues.netflixclone.utils;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.danieljrodrigues.netflixclone.model.Category;
 import com.danieljrodrigues.netflixclone.model.Movie;
@@ -111,6 +112,7 @@ public class MovieDetailTask extends AsyncTask<String, Void, MovieDetail> {
         dialog.dismiss();
 
         if (movieDetailLoader != null) {
+            Log.i("TESTE", String.valueOf(movieDetail));
             movieDetailLoader.onResult(movieDetail);
         }
     }
@@ -128,9 +130,5 @@ public class MovieDetailTask extends AsyncTask<String, Void, MovieDetail> {
         }
 
         return new String(baos.toByteArray());
-    }
-
-    public interface CategoryLoader {
-        void onResult(List<Category> categories);
     }
 }

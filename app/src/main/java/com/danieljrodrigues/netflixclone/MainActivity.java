@@ -50,7 +50,6 @@ public class MainActivity extends AppCompatActivity implements CategoryTask.Cate
 
     @Override
     public void onResult(List<Category> categories) {
-        Log.i("TESTE", String.valueOf(categories));
         categoryAdapter.setCategories(categories);
         categoryAdapter.notifyDataSetChanged();
     }
@@ -95,9 +94,15 @@ public class MainActivity extends AppCompatActivity implements CategoryTask.Cate
 
         @Override
         public void onClick(int position) {
-            Intent intent = new Intent(MainActivity.this, MovieActivity.class);
-            intent.putExtra("id", movieData.get(position).getId());
-            startActivity(intent);
+            int id = movieData.get(position).getId();
+
+            if (id <= 3) {
+                Intent intent = new Intent(MainActivity.this, MovieActivity.class);
+                intent.putExtra("id", id);
+                startActivity(intent);
+            }
+
+            return;
         }
     }
 

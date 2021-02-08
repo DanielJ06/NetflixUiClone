@@ -7,13 +7,16 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.danieljrodrigues.netflixclone.model.Movie;
 import com.danieljrodrigues.netflixclone.model.MovieDetail;
+import com.danieljrodrigues.netflixclone.utils.ImageDownloadTask;
 import com.danieljrodrigues.netflixclone.utils.MovieDetailTask;
 
 import java.util.ArrayList;
@@ -22,11 +25,22 @@ import java.util.List;
 public class MovieActivity extends AppCompatActivity implements MovieDetailTask.MovieDetailLoader {
 
     private RecyclerView rvSimilar;
+    private MovieAdapter movieAdapter;
+
+    private TextView movieTitle;
+    private TextView movieDesc;
+    private TextView movieCast;
+    private RecyclerView similarMovies;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie);
+
+        movieTitle = findViewById(R.id.movie_title);
+        movieDesc = findViewById(R.id.movie_synopsis);
+        movieCast = findViewById(R.id.movie_cast);
+        similarMovies = findViewById(R.id.similar_rv);
 
         Toolbar movieToolbar = findViewById(R.id.movie_toolbar);
         setSupportActionBar(movieToolbar);
@@ -38,26 +52,29 @@ public class MovieActivity extends AppCompatActivity implements MovieDetailTask.
         }
 
         List<Movie> movies = new ArrayList<>();
-        for(int i=0; i < 12; i++) {
-            Movie movie = new Movie();
-            movies.add(movie);
-        }
+        movieAdapter = new MovieAdapter(movies);
 
         rvSimilar = findViewById(R.id.similar_rv);
         rvSimilar.setLayoutManager(new GridLayoutManager(this, 3));
-        rvSimilar.setAdapter(new MovieAdapter(movies));
+        rvSimilar.setAdapter(movieAdapter);
 
         Bundle extras = getIntent().getExtras();
         if(extras != null) {
             int id = extras.getInt("id");
             MovieDetailTask movieDetailTask = new MovieDetailTask(this);
+            movieDetailTask.setMovieDetailLoader(this);
             movieDetailTask.execute("https://tiagoaguiar.co/api/netflix/" + id);
         }
     }
 
     @Override
     public void onResult(MovieDetail movieDetail) {
+        movieTitle.setText(movieDetail.getMovie().getTitle());
+        movieDesc.setText(movieDetail.getMovie().getDesc());
+        movieCast.setText(movieDetail.getMovie().getCast());
 
+        movieAdapter.setSimilarMovies(movieDetail.getMoviesSimilar());
+        movieAdapter.notifyDataSetChanged();
     }
 
     private class MovieHolder extends RecyclerView.ViewHolder {
@@ -70,7 +87,7 @@ public class MovieActivity extends AppCompatActivity implements MovieDetailTask.
     }
 
     private class MovieAdapter extends RecyclerView.Adapter<MovieHolder> {
-        private final List<Movie> movies;
+        private List<Movie> movies;
 
         private MovieAdapter(List<Movie> movies) {
             this.movies = movies;
@@ -87,11 +104,16 @@ public class MovieActivity extends AppCompatActivity implements MovieDetailTask.
         @Override
         public void onBindViewHolder(@NonNull MovieHolder holder, int position) {
             Movie movie = movies.get(position);
+            new ImageDownloadTask(holder.similarCover).execute(movie.getCoverUrl());
         }
 
         @Override
         public int getItemCount() {
             return movies.size();
+        }
+
+        void setSimilarMovies(List<Movie> moviesSimilar) {
+            this.movies = moviesSimilar;
         }
     }
 }
