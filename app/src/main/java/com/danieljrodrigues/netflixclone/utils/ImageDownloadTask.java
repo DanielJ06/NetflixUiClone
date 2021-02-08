@@ -1,10 +1,18 @@
 package com.danieljrodrigues.netflixclone.utils;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.os.AsyncTask;
 import android.widget.ImageView;
+
+import androidx.core.content.ContextCompat;
+
+import com.danieljrodrigues.netflixclone.R;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,9 +23,14 @@ import java.net.URL;
 
 public class ImageDownloadTask extends AsyncTask<String, Void, Bitmap> {
     private final WeakReference<ImageView> imageViewWeakReference;
+    private boolean shadowEnabled;
 
     public ImageDownloadTask(ImageView imageView) {
         this.imageViewWeakReference = new WeakReference<>(imageView);
+    }
+
+    public void setShadowEnabled(boolean shadowEnabled) {
+        this.shadowEnabled = shadowEnabled;
     }
 
     @Override
@@ -60,15 +73,27 @@ public class ImageDownloadTask extends AsyncTask<String, Void, Bitmap> {
         ImageView imageView = imageViewWeakReference.get();
         if (imageView != null && bitmap != null) {
 
-            if(bitmap.getWidth() < imageView.getWidth() || bitmap.getHeight() < imageView.getHeight()) {
-                Matrix matrix = new Matrix();
-                matrix.postScale((float) imageView.getWidth() / (float) bitmap.getWidth(),
-                                (float) imageView.getHeight() / (float) bitmap.getHeight());
-                bitmap = Bitmap.createBitmap(
-                    bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, false
+            if (shadowEnabled) {
+                LayerDrawable drawable = (LayerDrawable) ContextCompat.getDrawable(
+                    imageView.getContext(),
+                    R.drawable.shadows
                 );
-            }
 
+                if(drawable != null) {
+                    BitmapDrawable bitmapDrawable = new BitmapDrawable(bitmap);
+                    drawable.setDrawableByLayerId(R.id.coverDrawable, bitmapDrawable);
+                    imageView.setImageDrawable(drawable);
+                }
+            } else {
+                if(bitmap.getWidth() < imageView.getWidth() || bitmap.getHeight() < imageView.getHeight()) {
+                    Matrix matrix = new Matrix();
+                    matrix.postScale((float) imageView.getWidth() / (float) bitmap.getWidth(),
+                                    (float) imageView.getHeight() / (float) bitmap.getHeight());
+                    bitmap = Bitmap.createBitmap(
+                        bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, false
+                    );
+                }
+            }
             imageView.setImageBitmap(bitmap);
         }
     }

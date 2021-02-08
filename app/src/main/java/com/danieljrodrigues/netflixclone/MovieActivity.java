@@ -30,7 +30,7 @@ public class MovieActivity extends AppCompatActivity implements MovieDetailTask.
     private TextView movieTitle;
     private TextView movieDesc;
     private TextView movieCast;
-    private RecyclerView similarMovies;
+    private ImageView imgCover;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +40,7 @@ public class MovieActivity extends AppCompatActivity implements MovieDetailTask.
         movieTitle = findViewById(R.id.movie_title);
         movieDesc = findViewById(R.id.movie_synopsis);
         movieCast = findViewById(R.id.movie_cast);
-        similarMovies = findViewById(R.id.similar_rv);
+        imgCover = findViewById(R.id.coverImage);
 
         Toolbar movieToolbar = findViewById(R.id.movie_toolbar);
         setSupportActionBar(movieToolbar);
@@ -73,16 +73,20 @@ public class MovieActivity extends AppCompatActivity implements MovieDetailTask.
         movieDesc.setText(movieDetail.getMovie().getDesc());
         movieCast.setText(movieDetail.getMovie().getCast());
 
+        ImageDownloadTask imageDownloadTask = new ImageDownloadTask(imgCover);
+        imageDownloadTask.setShadowEnabled(true);
+        imageDownloadTask.execute(movieDetail.getMovie().getCoverUrl());
+
         movieAdapter.setSimilarMovies(movieDetail.getMoviesSimilar());
         movieAdapter.notifyDataSetChanged();
     }
 
     private class MovieHolder extends RecyclerView.ViewHolder {
-        final ImageView similarCover;
+        final ImageView imageViewCover;
 
         public MovieHolder(@NonNull View itemView) {
             super(itemView);
-            similarCover = itemView.findViewById(R.id.similar_movie_cover);
+            imageViewCover = itemView.findViewById(R.id.coverImage);
         }
     }
 
@@ -104,7 +108,7 @@ public class MovieActivity extends AppCompatActivity implements MovieDetailTask.
         @Override
         public void onBindViewHolder(@NonNull MovieHolder holder, int position) {
             Movie movie = movies.get(position);
-            new ImageDownloadTask(holder.similarCover).execute(movie.getCoverUrl());
+            new ImageDownloadTask(holder.imageViewCover).execute(movie.getCoverUrl());
         }
 
         @Override
@@ -113,7 +117,8 @@ public class MovieActivity extends AppCompatActivity implements MovieDetailTask.
         }
 
         void setSimilarMovies(List<Movie> moviesSimilar) {
-            this.movies = moviesSimilar;
+            this.movies.clear();
+            this.movies.addAll(moviesSimilar);
         }
     }
 }
